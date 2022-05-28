@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Teste_Empresa.Domain;
+using Teste_Empresa.Interface;
 
 namespace Teste_Empresa.Controllers
 {
@@ -15,10 +16,12 @@ namespace Teste_Empresa.Controllers
     public class EmpresaController : ControllerBase
     {
         private readonly ILogger<EmpresaController> _logger;
+        private readonly ICarregaEmpresas _carregaEmpresa;
 
-        public EmpresaController(ILogger<EmpresaController> logger)
+        public EmpresaController(ILogger<EmpresaController> logger, ICarregaEmpresas carregaEmpresas)
         {
             _logger = logger;
+            _carregaEmpresa = carregaEmpresas;
         }
 
         [HttpPost]
@@ -32,7 +35,7 @@ namespace Teste_Empresa.Controllers
             {
                 _logger.LogInformation($"Solicitado Nome Empresa id:{id}");
                 List<Empresa> listaEmpresa = new List<Empresa>();
-                CarregaEmpresas(listaEmpresa);
+                _carregaEmpresa.CarregarEmpresas(listaEmpresa);
 
                 EmpresaResponse empresaResponse = new EmpresaResponse();
 
@@ -56,22 +59,6 @@ namespace Teste_Empresa.Controllers
             
         }
 
-        public bool CarregaEmpresas(List<Empresa> listaEmpresa)
-        {
-            try
-            {
-                _logger.LogInformation("Carregando as empresas...");
-                listaEmpresa.Add(new Empresa() { Id = 1, NomeEmpresa = "Itaú" });
-                listaEmpresa.Add(new Empresa() { Id = 2, NomeEmpresa = "Petrobras" });
-                _logger.LogInformation("...Empresas Carregadas");
-                return true;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Erro ao carregar as empresas - {ex.Message}");
-                return false;
-            }
-            
-        }
+        
     }
 }

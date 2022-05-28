@@ -5,6 +5,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System;
+using Teste_Empresa.Interface;
+using Teste_Empresa.Repository;
 
 namespace Teste_Empresa
 {
@@ -20,6 +22,8 @@ namespace Teste_Empresa
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<ICarregaEmpresas, CarregaEmpresasRepository>();
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -37,7 +41,7 @@ namespace Teste_Empresa
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint(url: "/swagger/v1/swagger.json", name: "Teste");
+                c.SwaggerEndpoint(url: "/swagger/v1/swagger.json", name: "Teste-Empresa");
                 c.RoutePrefix = String.Empty;
             });
 
