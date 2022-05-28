@@ -56,7 +56,7 @@ namespace Teste_Empresa.Controllers
             
         }
 
-        private void CarregaEmpresas(List<Empresa> listaEmpresa)
+        public bool CarregaEmpresas(List<Empresa> listaEmpresa)
         {
             try
             {
@@ -64,10 +64,12 @@ namespace Teste_Empresa.Controllers
                 listaEmpresa.Add(new Empresa() { Id = 1, NomeEmpresa = "Itaú" });
                 listaEmpresa.Add(new Empresa() { Id = 2, NomeEmpresa = "Petrobras" });
                 _logger.LogInformation("...Empresas Carregadas");
+                return true;
             }
             catch (Exception ex)
             {
                 _logger.LogError($"Erro ao carregar as empresas - {ex.Message}");
+                return false;
             }
             
         }
