@@ -1,4 +1,4 @@
-﻿namespace Teste_Empresa
+﻿namespace Teste_Empresa.Domain
 {
     public class EmpresaResponse
     {
