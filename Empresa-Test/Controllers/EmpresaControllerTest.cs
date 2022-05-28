@@ -25,6 +25,8 @@ namespace Empresa_Test.Controllers
             var command = new EmpresaController(_mockLogger.Object);
             var response = await command.Get(id);
 
+            var nomeEmpresa = ((ObjectResult)response).Value;
+
             Assert.Equal(HttpStatusCode.OK.GetHashCode(), ((ObjectResult)response).StatusCode);
         }
 
