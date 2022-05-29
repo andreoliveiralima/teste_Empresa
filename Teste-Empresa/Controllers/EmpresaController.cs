@@ -24,7 +24,7 @@ namespace Teste_Empresa.Controllers
             _carregaEmpresa = carregaEmpresas;
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("{id:int}")]
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(EmpresaResponse))]
         [SwaggerResponse((int)HttpStatusCode.BadRequest)]
@@ -40,7 +40,7 @@ namespace Teste_Empresa.Controllers
                 EmpresaResponse empresaResponse = new EmpresaResponse();
 
                 empresaResponse.NomeEmpresa = listaEmpresa.FirstOrDefault(x => x.Id == id)?.NomeEmpresa;
-                if(empresaResponse.NomeEmpresa != null)
+                if (empresaResponse.NomeEmpresa != null)
                 {
                     _logger.LogInformation($"Empresa Localizada: {empresaResponse.NomeEmpresa}");
                 }
@@ -48,17 +48,16 @@ namespace Teste_Empresa.Controllers
                 {
                     _logger.LogInformation($"Empresa Não Localizada");
                 }
-                
+
                 return Ok(empresaResponse);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Erro ao localizar empresa - {ex.Message}" );
-                return BadRequest("Erro Interno - Contate o responsável");
+                _logger.LogError($"Erro: {ex.Message}");
+                return BadRequest("Erro Interno");
             }
-            
+
         }
 
-        
     }
 }
