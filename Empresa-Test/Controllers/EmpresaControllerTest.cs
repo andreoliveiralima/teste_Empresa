@@ -7,18 +7,20 @@ using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using Teste_Empresa.Domain;
+using Teste_Empresa.Interface;
 
 namespace Empresa_Test.Controllers
 {
     public class EmpresaControllerTest
     {
         private readonly Mock<ILogger<EmpresaController>> _mockLogger;
-        private readonly Mock<List<Empresa>> _mockEmpresas;
+        
+        private readonly Mock<ICarregaEmpresas> _mockCarregaEmpresa;
 
         public EmpresaControllerTest()
         {
             _mockLogger = new Mock<ILogger<EmpresaController>>();
-            _mockEmpresas = new Mock<List<Empresa>>();
+            _mockCarregaEmpresa = new Mock<ICarregaEmpresas>();
         }
 
         [Theory(DisplayName ="Sucesso ao buscar empresa")]
@@ -26,20 +28,13 @@ namespace Empresa_Test.Controllers
         [InlineData(2)]
         public async Task BuscarEmpresa(int id)
         {
-            var command = new EmpresaController(_mockLogger.Object);
+            var command = new EmpresaController(_mockLogger.Object, _mockCarregaEmpresa.Object);
             var response = await command.Get(id);
 
             Assert.Equal(HttpStatusCode.OK.GetHashCode(), ((ObjectResult)response).StatusCode);
         }
 
-        [Fact(DisplayName = "Sucesso ao carregar empresas")]
-        public void CarregarEmpresa()
-        {
-            var command = new EmpresaController(_mockLogger.Object);
-            var result = command.CarregaEmpresas(_mockEmpresas.Object);
-
-            Assert.True(result);
-        }
+        
 
     }
 }
