@@ -25,21 +25,21 @@ namespace Teste_Empresa.Controllers
         }
 
         [HttpGet]
-        [Route("{id:int}")]
+        [Route("")]
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(EmpresaResponse))]
         [SwaggerResponse((int)HttpStatusCode.BadRequest)]
         [SwaggerResponse((int)HttpStatusCode.InternalServerError)]
-        public async Task<IActionResult> Get(int id)
+        public async Task<IActionResult> Get([FromQuery] EmpresaRequest request)
         {
             try
             {
-                _logger.LogInformation($"Solicitado Nome Empresa id:{id}");
+                _logger.LogInformation($"Solicitado Nome Empresa id:{request.Id}");
                 List<Empresa> listaEmpresa = new List<Empresa>();
                 _carregaEmpresa.CarregarEmpresas(listaEmpresa);
 
                 EmpresaResponse empresaResponse = new EmpresaResponse();
 
-                empresaResponse.NomeEmpresa = listaEmpresa.FirstOrDefault(x => x.Id == id)?.NomeEmpresa;
+                empresaResponse.NomeEmpresa = listaEmpresa.FirstOrDefault(x => x.Id == request.Id)?.NomeEmpresa;
                 if (empresaResponse.NomeEmpresa != null)
                 {
                     _logger.LogInformation($"Empresa Localizada: {empresaResponse.NomeEmpresa}");
